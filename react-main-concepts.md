@@ -1,5 +1,4 @@
-# React Notes
-#LearnReact
+# React Main Concepts
 
 ## Conventions
 ### Code
@@ -220,7 +219,7 @@ class Toggle extends React.Component {
 ```
 
 ### Conditional Rendering
--We’ll create a `Greeting` component that displays one of two components, depending on whether or not a user is logged in:
+- We’ll create a `Greeting` component that displays one of two components, depending on whether or not a user is logged in:
 ```
 function UserGreeting (props) {
   return <h1>Welcome back!</h1>
@@ -558,7 +557,7 @@ class FlavorForm extends React.Component {
 ```
 - You can pass an array into the `value` attribute in order to select multiple options in a select tag
 #### File Input Tag
--Because the value of the file input tag is read-only, it is an uncontrolled component in React
+- Because the value of the file input tag is read-only, it is an uncontrolled component in React
 #### Handling Multiple Inputs
 - When you need to handle multiple controlled `input` elements, you can add a `name` attribute to each element and let the handler function choose what to do based on the value of `event.target.name`:
 ```

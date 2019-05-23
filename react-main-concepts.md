@@ -17,14 +17,14 @@
 - JSX prevents injection attacks by converting everything to a string before being rendered
 - JSX is compiled down to `React.createElement()` calls, which produces an object, which is what was available pre-JSX
 - Two ways in JSX to declare the same React element:
-```
+```javascript
 const element = (
   <h1 className="greeting">
     Hello World!
   </h1>
 );
 ```
-```
+```javascript
 // NOTE: no one really uses this...we'll see why later...
 
 const element = React.createElement(
@@ -37,12 +37,12 @@ const element = React.createElement(
 
 ### Rendering Elements
 - Rendering an element into the root DOM node:
-```
+```javascript
 const element = <h1>Hello World!</h1>;
 ReactDOM.render(element, document.getElementById('root);
 ```
 - React elements are immutable, they cannot be updated, only replaced:
-```
+```javascript
 function tick () {
   const element = (
     <div>
@@ -62,14 +62,14 @@ setInterval(tick, 1000);	// re-renders 'tick' function every second
 
 ### Components and Props
 - Two ways to write a React component:
-```
+```javascript
 // using a function definition:
 
 function Welcome (props) {
   return <h1>Hello, {props.name}</h1>
 }
 ```
-```
+```javascript
 // using an ES6 class definition:
 // do note that class definitions have additional features
 // was prominent about a year ago when you needed to pass state -- no longer the case as of v16.5 when Hooks were introduced
@@ -81,7 +81,7 @@ class Welcome extends React.Component {
 };
 ```
 - React components rendered the same way as React elements:
-```
+```javascript
 function Welcome (props) {
 ret urn <h1>Hello, {props.name}</h1>;
 }
@@ -94,7 +94,7 @@ ReactDOM.render(
 );
 ```
 - We can use the same component multiple times with different props:
-```
+```javascript
 ...
 
 <Welcome name="Alyssa" />
@@ -109,7 +109,7 @@ ReactDOM.render(
 ### State and Lifecycle
 - State is not available in component function definitions (without Hooks).
 - We can make the Clock component example a reusable, self-contained, stateful component:
-```
+```javascript
 class Clock extends React.Component {
   constructor (props) {
     super(props);
@@ -155,7 +155,7 @@ ReactDOM.render(
 - Pass a function as the event handler, rather than a string (ex. `onClick={activateLasers}` as opposed to `onCLick="activateLasers()"`)
 -  Don’t forget to `e.preventDefault()` on event handlers that are not using the default click action!
 - It is necessary to bind the callback function to `this` otherwise it will be `undefined` when the function is called, this is a JS feature, not React/JSX…Generally, if you refer to a method without `()` after it, such as with our click handler below, you should bind that method:
-```
+```javascript
 class Toggle extends React.component {
   constructor (props) {
     super(props);
@@ -186,7 +186,7 @@ ReactDOM.render(
 );
 ```
 - Alternatives to having to manually bind with the format above:
-```
+```javascript
 // public class fields syntax (experimental)
 
 class Toggle extends React.Component {
@@ -195,7 +195,7 @@ class Toggle extends React.Component {
 	...
 }
 ```
-```
+```javascript
 // arrow function in the callback
 
 class Toggle extends React.Component {
@@ -211,16 +211,16 @@ class Toggle extends React.Component {
 }
 ```
 - It’s common to want to pass an extra parameter to an event handler, either of the following would work:
-```
+```javascript
 <button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button>
 ```
-```
+```javascript
 <button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
 ```
 
 ### Conditional Rendering
 - We’ll create a `Greeting` component that displays one of two components, depending on whether or not a user is logged in:
-```
+```javascript
 function UserGreeting (props) {
   return <h1>Welcome back!</h1>
 }
@@ -246,7 +246,7 @@ ReactDOM.render(
 );
 ```
 - Can use variables to store elements, which can be helpful when conditionally rendering part of a component:
-```
+```javascript
 function LoginButton (props) {
   return (
     <button onClick={props.onClick}>    
@@ -306,7 +306,7 @@ ReactDOM.render(
 );
 ```
 - Inline expressions: Inline `If` with Logical `&&` Operator; these work because `true && expression` always evaluates to `expression`, and conversely `false && expression` always evaluates to `false`
-```
+```javascript
 function Mailbox (props) {
   const unreadMessages = props.unreadMessages;
 
@@ -330,7 +330,7 @@ ReactDOM.render(
 );
 ```
 - Inline `If-Else` with Ternary Operator:
-```
+```javascript
 render () {
   const isLoggedIn = this.state.isLoggedIn;
 
@@ -342,7 +342,7 @@ render () {
 }
 ```
 - Could also be used for larger expressions, although it’s less obvious what’s going on:
-```
+```javascript
 render () {
   const isLoggedIn = this.state.isLoggedIn;
 
@@ -358,7 +358,7 @@ render () {
 }
 ```
 - Can also be used to prevent a component from rendering:
-```
+```javascript
 function WarningBanner (props) {
   if (!props.warn) {
     // will stop render of component
@@ -375,7 +375,7 @@ function WarningBanner (props) {
 
 ### Lists and Keys
 - We can build collections  of elements:
-```
+```javascript
 const numbers = [ 1, 2, 3, 4, 5 ];
 const listItems = numbers.map(number => {
   <li>{ number }</li>
@@ -389,7 +389,7 @@ ReactDOM.render(
 );
 ```
 - Or, alternatively, if you want to render a list inside a component:
-```
+```javascript
 function ListItem (props) {
   return <li>{props.value}</li>;
 };
@@ -418,7 +418,7 @@ ReactDOM.render(
 - Keys must be unique among siblings, but don’t have to be unique on a global scale
 - Keys serve as a hint to React, but don’t get passed to your component. If your component needs the same value, pass it as a prop with a different name
 - Map can also be inlined into the JSX:
-```
+```javascript
 function NumberList (props) {
   const numbers = props.numbers;
 
@@ -438,7 +438,7 @@ function NumberList (props) {
 #### Input Tag
 - An input whose value is controlled by React (with React being the single source of truth) is called a "controlled component"
 - An example of React managing state for a text input form element:
-```
+```javascript
 class NameForm extends React.Component {
   constructor (props) {
     super(props);
@@ -475,13 +475,13 @@ class NameForm extends React.Component {
 - Since `handleChange` runs on every keystroke, the React state is also updated as the user types
 #### Text Area Tag
 - The `<textarea>` element's value is definied by it's children:
-```
+```javascript
 <textarea>
   This is the child of the textarea.
 </textarea>
 ```
 - In React, the `<textarea>` will behave much like the `<input>` and receive it's value from the `value` attribute instead of targeting it's child:
-```
+```javascript
 class EssayForm extends React.Component {
   constructor (props) {
     super(props);
@@ -519,7 +519,7 @@ class EssayForm extends React.Component {
 ```
 #### Select Tag
 - Instead of setting `selected` on the `option` within the `select`, React sets the `selected` value by setting a value attribute on the root `select` tag
-```
+```javascript
 class FlavorForm extends React.Component {
   constructor (props) {
     super(props);
@@ -560,7 +560,7 @@ class FlavorForm extends React.Component {
 - Because the value of the file input tag is read-only, it is an uncontrolled component in React
 #### Handling Multiple Inputs
 - When you need to handle multiple controlled `input` elements, you can add a `name` attribute to each element and let the handler function choose what to do based on the value of `event.target.name`:
-```
+```javascript
 class Reservation extends React.Component {
   constructor (props) {
     super(props);
@@ -616,7 +616,7 @@ class Reservation extends React.Component {
 - `Formik` is one of the most popular solutions, but it is built upon the same principles of controlled components and managed state, so make sure you understand the basics.
 ### Lifting Up State
 - It's common for several components to reflect the same changing data, in which case we'll "lift" the shared state up to their closest common ancestor:
-```
+```javascript
 const scaleNames = {
   c: "Celsius",
   f: "Fahrenheit"
@@ -727,7 +727,7 @@ class Calculator extends React.Component {
 - The composition model is recommended over iheritance in order to increase reusability of code between components
 #### Containment
 - Some components don't know their children ahead of time. This is especially common for components like `Sidebar` or `Dialog` that represent generic "boxes", but we can use the `children` prop to pass the child elements. This allows other components to pass arbitrary children to them by nesting the JSX. Anything inside the `<FancyBorder>` tags get passed into the FancyBorder component as a `children` prop:
-```
+```javascript
 function FancyBorder (props) {
   return (
     <div className={'FancyBorder FancyBorder-' + props.color}>
@@ -750,7 +750,7 @@ function WelcomeDialog (props) {
 }
 ```
 - You might sometimes need multiple "holes" in a component, in such cases you can come up with your own convention instead of `children`. This is less common, but entirely possible:
-```
+```javascript
 function SplitPane (props) {
   return (
     <div className="SplitPane">
@@ -774,7 +774,7 @@ function App () {
 ```
 #### Specialization
 - There are cases where we think about components as being "special cases" of another, more generic component. For instance, WelcomeDialog is a special case of Dialog. The best practice here is to achieve this by composition where more "specific" component renders a more "generic" one and configures it with props:
-```
+```javascript
 function Dialog (props) {
   return (
     <FancyBorder color="blue">
@@ -821,12 +821,12 @@ function WelcomeDialog () {
       - If you can't find a component where it makes sense to own the state, create a new component simply for holding the state and add it somewhere in the hierarchy above the common owner component.
 6. Add inverse data flow
     - Now it's time to consider how data will flow out of the deeply-nested components in order to update the state. This usually takes the form of an onChange prop that's passed down from the state-holding component.
-#### HTTP (via Dave Ceddia's Pure React email newsletter)
+#### HTTP in React (via Dave Ceddia's Pure React email newsletter)
 - Popular HTTP libraries include:
     - Axios
     - Fetch
 - HTTP example with Axios:
-```
+```javascript
 import React from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";

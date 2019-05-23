@@ -821,3 +821,42 @@ function WelcomeDialog () {
       - If you can't find a component where it makes sense to own the state, create a new component simply for holding the state and add it somewhere in the hierarchy above the common owner component.
 6. Add inverse data flow
     - Now it's time to consider how data will flow out of the deeply-nested components in order to update the state. This usually takes the form of an onChange prop that's passed down from the state-holding component.
+#### HTTP (via Dave Ceddia's Pure React email newsletter)
+- Popular HTTP libraries include:
+    - Axios
+    - Fetch
+- HTTP example with Axios:
+```
+import React from "react";
+import ReactDOM from "react-dom";
+import axios from "axios";
+
+class Reddit extends React.Component {
+  state = { posts: [] };
+
+  componentDidMount () {
+    axios.get(`https://www.reddit.com/r/reactjs.json`)
+      .then( response => {
+        const posts = response.data.data.children.map(object => object.data);
+
+        this.setState({ posts });
+      })
+  }
+
+  render () {
+    return (
+      <div>
+        <h1>r/reactjs</h1>
+        <ul>
+          <li key={post.id}>{post.title}</li>
+        </ul>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Reddit />,
+  document.getElementById('root')
+);
+```

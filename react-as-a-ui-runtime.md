@@ -180,28 +180,62 @@ export default React.memo(Row);
 
 ### Batching
 
-- (come back to this after reading about Hooks)
+- Actions such as render are batched in order to reduce duplication of efforts and improve performance
+- `useReduce` hook can be used to further batch actions on more complicated shared states
 
 ### Call Tree
 
--
+- Much like the call-stack of JavaScript and other languages, React has a call-stack of sorts with can be thought of more like a tree. Unlike the JS call stack where, when you get to the end of the chained calls the stack can be destroyed, the React call-tree must remain since it's the DOM and must remain visible for us to interact with it.
+- Like call-stacks, these call-trees are eventually destroyed when the reconciliation rules say it's necessary
 
 ### Context
 
--
+- Basically dynamic, global scope. When context is called it will look for the closest `<ThemeContext.Provider>` above it in the tree and use it's value. If no `<ThemeContext.Provider>` is found, the default value specified in the `createContext` method will be used:
 
-### Effects
+```javascript
+const ThemeContext = React.createContext(
+  "light" // default value as a fallback
+);
 
--
+function DarkApp() {
+  return (
+    <ThemeContext.Provider value="dark">
+      <MyComponents />
+    </ThemeContext.Provider>
+  );
+}
+
+function someDeeplyNestedChild() {
+  // Depends on where thie child is rendered
+  const theme = useContext(ThemeContext);
+  // ...
+}
+```
+
+### Effects (useEffect)
+
+- Time to interactive and time to first paint should take priority in rendering, effects are called after this initial load period as well as any time the component updates.
+- If your effect uses a subscription, it should be cleaned up via a returned function:
+
+```javascript
+useEffect(() => {
+  DataSource.addSubscription(handleChange);
+  return () => DataSource.removeSubscription(handleChange);
+});
+```
+
+- React will execute the returned function before apploying this effect the next time, and also before the component is destroyed.
+- if you scope the effect to specific event(s), it will be skipped on all other state updates:
+
+```javascript
+useEffect(() => {
+  ...
+}, [count]);  // effect will be skipped unless `count` state is updated
+```
+
+- Similarly, if you include an empty array as the second argument for useEffect, it will run on the initial component load but will not be re-executed on state updates. Sometimes this may be desirable, sometimes not.
 
 ### Custom Hooks
 
--
-
-### Status Use Order
-
--
-
-### What's Left Out
-
--
+- Since Hooks like useState and useEffect are function calls, we can compose them into our own hooks.
+- Learn more here: https://reactjs.org/docs/hooks-custom.html
